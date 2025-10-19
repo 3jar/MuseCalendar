@@ -1,0 +1,28 @@
+.container {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.dropdown {
+}
+
+.profileImage {
+    transform: translateX(35%);
+    transition: transform 0.3s ease;
+}
+
+.spotifyImage {
+    transform: translateX(-35%);
+    transition: transform 0.3s ease;
+}
+
+.container:hover .profileImage,
+.container:focus-within .profileImage,
+.dropdown:focus .profileImage {
+    transform: translateX(0);
+}
+
+.container:hover .spotifyImage,
+.container:focus-within .spotifyImage,
+.dropdown:focus .spotifyImage {
+    transform: translateX(0);
+}

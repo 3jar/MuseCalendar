@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum TokenProvider {
+  SSO
+  SPOTIFY
+  SPOTIFY_APP
+}
+
+model Token {
+  id                  String         @id @default(cuid())
+  provider            TokenProvider
+  subject             String
+  sessionKey          String?        @unique @db.VarChar(128)
+
+  // 민감 토큰
+  accessToken         String?        @db.Text
+  refreshToken        String?        @db.Text
+  accessTokenExpires  DateTime?
+  refreshTokenExpires DateTime?
+
+  scope               String?
+  meta                Json?
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@index([provider, subject])
+  @@index([sessionKey])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  display_id    Int
+  birthday      String?
+
+  accounts      Account[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  provider          String
+  providerAccountId String
+
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId, provider])
+}
+
+enum SongForm {
+  WAKEUP
+  LABOR
+}
+
+model Playlist {
+  id          String    @id @default(cuid())
+  userId      String
+  songform    SongForm
+  streamDate  DateTime
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  items       PlaylistTrack[]
+
+  @@index([streamDate])
+  @@map("playlists")
+}
+
+model PlaylistTrack {
+  id          String   @id @default(cuid())
+  playlistId  String
+  trackId     String   // Spotify track ID
+  orderIndex  Int
+  note        String?
+
+  playlist    Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, trackId])
+  @@index([playlistId, orderIndex])
+  @@map("playlist_tracks")
+}

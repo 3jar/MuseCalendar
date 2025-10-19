@@ -1,0 +1,8 @@
+{
+    "android": {
+        "package": "com.anonymous.musecalendar"
+    },
+    "ios": {
+        "bundleIdentifier": "com.anonymous.musecalendar"
+    }
+}
