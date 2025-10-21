@@ -25,18 +25,13 @@ export async function POST(req: NextRequest) {
         const uri = trackId.startsWith("spotify:track:") ? trackId : `spotify:track:${trackId}`;
         const url = `me/player/play?device_id=${encodeURIComponent(deviceId)}`;
 
-        const r = await fetchSpotify(url, {
+        await fetchSpotify(url, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 uris: [uri],
             }),
         });
-
-        if (!r.ok) {
-            const txt = await r.text();
-            return NextResponse.json({ error: txt, ok: false }, { status: r.status });
-        }
 
         return NextResponse.json({ ok: true });
     } catch (err: any) {

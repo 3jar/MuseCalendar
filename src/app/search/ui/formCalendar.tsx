@@ -2,12 +2,14 @@
 import { SongForm } from "@prisma/client";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { cn } from "@/lib/cn";
+import type * as uiTypes from "./index";
 
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 
 export type ExsistingDate = {
     songform: SongForm;
     streamDate: Date;
+    userId: string;
 };
 
 type dates = {
@@ -19,9 +21,9 @@ type dates = {
 };
 
 interface FormCalendarProps {
-    exdate: ExsistingDate[];
     songform: SongForm;
     setDate: (date: Date | null) => void;
+    exdate: ExsistingDate[];
 }
 
 function generateMonthDates(monthOffset: number, next: boolean) {
@@ -59,7 +61,7 @@ function generateMonthDates(monthOffset: number, next: boolean) {
     }
     for (let d = firstDay.getDate(); d <= lastDay.getDate(); d++) {
         const date = new Date(year, month, d);
-        const disabled = now.getDate() >= d && !next;
+        const disabled = now.getDate() > d && !next;
         dates.push({
             date,
             form: "WAKEUP",
@@ -97,7 +99,7 @@ function generateMonthDates(monthOffset: number, next: boolean) {
     for (let d = firstDay.getDate(); d <= lastDay.getDate(); d++) {
         const current = new Date(year, month, d);
         const isWeekend = current.getDay() === 0 || current.getDay() === 6;
-        const isPast = now.getDate() >= d && !next;
+        const isPast = now.getDate() > d && !next;
         const disabled = isWeekend || isPast;
         dates.push({
             date: current,
@@ -270,7 +272,7 @@ export function FormCalendar({ exdate, songform, setDate }: FormCalendarProps) {
                         />
                     </div>
 
-                    <div className="grid grid-cols-7 gap-1">
+                    <div className="grid grid-cols-7 gap-2">
                         <span className="w-full flex justify-center">S</span>
                         <span className="w-full flex justify-center">M</span>
                         <span className="w-full flex justify-center">T</span>
@@ -285,7 +287,7 @@ export function FormCalendar({ exdate, songform, setDate }: FormCalendarProps) {
                                     key={index}
                                     disabled={date.submit || (nextApply && curruntCal.m)}
                                     className={cn(
-                                        "aspect-square rounded-lg flex flex-col justify-center items-center duration-150",
+                                        "aspect-square rounded flex flex-col justify-center items-center duration-150",
                                         date.disabled
                                             ? "opacity-40 cursor-default"
                                             : "cursor-pointer",
@@ -295,7 +297,7 @@ export function FormCalendar({ exdate, songform, setDate }: FormCalendarProps) {
                                             "hover:bg-neutral-700",
                                         !date.disabled &&
                                             clickedDate?.getTime?.() === date.date.getTime() &&
-                                            "bg-green-500"
+                                            "bg-green-400"
                                     )}
                                     onClick={
                                         !date.disabled ? () => dateClick(date.date) : undefined

@@ -13,6 +13,8 @@ import { Skeleton } from "../ui/skeleton";
 import SchoolLogo from "public/shcool-logo.png";
 import SpotifyLogo from "public/spotify-logo.png";
 
+import { LogOutIcon } from "lucide-react";
+
 export function SignInComp() {
     const { session, status, signOut } = useAppSession();
     const [open, setOpen] = useState<"sso" | "spotify" | null>(null);
@@ -127,13 +129,13 @@ export function SignInComp() {
                 )}
                 {open && (
                     <div
-                        className="absolute right-0 top-full mt-2 w-48 origin-top-right bg-foreground rounded-md shadow-lg transition-all duration-200 z-50"
+                        className="absolute right-0 top-full mt-2 w-48 origin-top-right bg-neutral-900 rounded border border-neutral-700 text-foreground transition-all duration-200 z-50"
                         onMouseEnter={() => {}}
                         onFocus={() => {}}
                     >
                         <ul
                             className={cn(
-                                "p-2 text-sm space-y-1 flex flex-col justify-center",
+                                "p-2 text-sm space-y-2 flex flex-col justify-center",
                                 style.dropdown
                             )}
                         >
@@ -141,7 +143,7 @@ export function SignInComp() {
                                 <>
                                     <li>
                                         <button
-                                            className="block w-full text-left px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none text-background"
+                                            className="block w-full text-left px-4 py-2 hover:bg-neutral-700 focus:bg-gray-100 focus:outline-none"
                                             onClick={() => {
                                                 setOpen(null);
                                                 // Add profile action here
@@ -175,7 +177,7 @@ export function SignInComp() {
                                                     alt="프로필 이미지"
                                                     className="rounded-full"
                                                 />
-                                                <div className="flex flex-col justify-center">
+                                                <div className="flex flex-col justify-center ml-2">
                                                     <span className="text font-bold">
                                                         {session?.spotify?.username}
                                                     </span>
@@ -184,23 +186,24 @@ export function SignInComp() {
                                                     </span>
                                                 </div>
                                             </li>
-                                            <li className="mx-1 w-auto h-[1px] rounded-full bg-gray-300" />
+                                            <li className="w-auto h-[1px] rounded-full bg-neutral-700" />
                                             <li>
                                                 <button
-                                                    className="block w-full rounded text-left px-4 py-2 hover:bg-gray-200 text-red-600 cursor-pointer duration-150"
+                                                    className="flex items-center w-full rounded p-2 hover:bg-neutral-700 cursor-pointer duration-150"
                                                     onClick={() => {
                                                         setOpen(null);
                                                         signOut("SPOTIFY");
                                                     }}
                                                 >
-                                                    Spotify 연결 해제
+                                                    <LogOutIcon className="w-4 h-4 mr-2" />
+                                                    Sign out
                                                 </button>
                                             </li>
                                         </>
                                     ) : (
                                         <li>
                                             <button
-                                                className="block w-full text-center px-4 py-2 bg-green-500 hover:bg-green-600 duration-150 rounded cursor-pointer"
+                                                className="block w-full text-center px-4 py-2 bg-green-400 hover:bg-green-600 duration-150 rounded cursor-pointer"
                                                 onClick={() => {
                                                     setOpen(null);
                                                     SignInToSpotify();

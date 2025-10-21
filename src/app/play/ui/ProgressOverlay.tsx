@@ -31,16 +31,16 @@ export default function PrograssOverlay({ sdkLoader }: PrograssOverlayProps) {
                     <p className="text-gray-300 text-lg mb-2">{sdkLoader.messages}</p>
                     <div className="flex justify-center space-x-2 mt-4">
                         <div
-                            className={`w-2 h-2 rounded-full ${sdkLoader.messages.includes("스크립트") ? "bg-green-500" : "bg-gray-600"}`}
+                            className={`w-2 h-2 rounded-full ${sdkLoader.messages.includes("스크립트") ? "bg-green-400" : "bg-gray-600"}`}
                         />
                         <div
-                            className={`w-2 h-2 rounded-full ${sdkLoader.messages.includes("Player 인스턴스") ? "bg-green-500" : "bg-gray-600"}`}
+                            className={`w-2 h-2 rounded-full ${sdkLoader.messages.includes("Player 인스턴스") ? "bg-green-400" : "bg-gray-600"}`}
                         />
                         <div
-                            className={`w-2 h-2 rounded-full ${sdkLoader.messages.includes("액세스 토큰") ? "bg-green-500" : "bg-gray-600"}`}
+                            className={`w-2 h-2 rounded-full ${sdkLoader.messages.includes("액세스 토큰") ? "bg-green-400" : "bg-gray-600"}`}
                         />
                         <div
-                            className={`w-2 h-2 rounded-full ${sdkLoader.messages.includes("연결") ? "bg-green-500" : "bg-gray-600"}`}
+                            className={`w-2 h-2 rounded-full ${sdkLoader.messages.includes("연결") ? "bg-green-400" : "bg-gray-600"}`}
                         />
                     </div>
                 </div>

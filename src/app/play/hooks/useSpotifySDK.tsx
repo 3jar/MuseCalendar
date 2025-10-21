@@ -11,7 +11,7 @@ export function usePlaylist() {
     const loadedRef = useRef(false);
 
     useEffect(() => {
-        if (loadedRef.current) return; // 한 번만 로드
+        if (loadedRef.current) return;
 
         let alive = true;
         (async () => {
@@ -41,7 +41,7 @@ export function useSpotifySDK(
 
     const { playerRef, deviceId, state, reconnect, activate } = useSDKPlayer(
         sdkLoader,
-        0.5,
+        1,
         tokenKey,
         enabled
     );
@@ -58,23 +58,11 @@ export function useSpotifySDK(
         }
     }, [enabled, playerRef]);
 
-    const lastPlayedRef = useRef<string | null>(null);
-    const isPlayingRef = useRef(false);
-    const lastTrackOrderRef = useRef<number | null>(null);
-
-    // trackOrder가 변경되면 lastPlayed를 리셋
-    useEffect(() => {
-        if (lastTrackOrderRef.current !== null && lastTrackOrderRef.current !== states.trackOrder) {
-            lastPlayedRef.current = null;
-            console.log("Track order changed, resetting last played track");
-        }
-        lastTrackOrderRef.current = states.trackOrder;
-    }, [states.trackOrder]);
-
     useEffect(() => {
         if (!enabled) return;
         if (!deviceId || !playlistItems?.length) return;
         if (!playerRef.current || !playerRef.current.ready) return;
+        console.log("error");
 
         const idx = Math.max(
             0,
@@ -83,22 +71,15 @@ export function useSpotifySDK(
         const trackId = playlistItems[idx]?.trackId;
         if (!trackId) return;
 
-        if (lastPlayedRef.current === trackId || isPlayingRef.current) return;
-
-        lastPlayedRef.current = trackId;
-        isPlayingRef.current = true;
-
         (async () => {
             try {
                 await handler.playOnThisDevice(deviceId, trackId, tokenKey);
+                console.log(deviceId);
             } catch (e) {
                 console.error("auto play failed:", e);
-                lastPlayedRef.current = null;
-            } finally {
-                isPlayingRef.current = false;
             }
         })();
-    }, [enabled, deviceId, playlistItems, states.trackOrder, tokenKey]);
+    }, [playerRef, enabled, deviceId, playlistItems, states.trackOrder, tokenKey]);
 
     const guardedActions = useMemo(() => {
         const guard = <T extends (...args: any[]) => any>(fn: T): T =>

@@ -7,10 +7,11 @@ import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 interface SearchBarProps {
     searchLoader: UseLoaderReturn;
     setQ: (arg: string) => void;
+    q: string;
 }
 
-export default function SearchBar({ searchLoader, setQ }: SearchBarProps) {
-    const [tempQ, setTempQ] = useState<string>("");
+export default function SearchBar({ searchLoader, setQ, q }: SearchBarProps) {
+    const [tempQ, setTempQ] = useState<string>(q);
 
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -22,7 +23,7 @@ export default function SearchBar({ searchLoader, setQ }: SearchBarProps) {
             <div
                 className={cn(
                     "flex items-center w-full px-3 py-2",
-                    "rounded bg-background border border-neutral-700",
+                    "rounded bg-neutral-900 border border-neutral-700",
                     "duration-50",
                     "focus-within:border-neutral-400"
                 )}

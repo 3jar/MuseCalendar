@@ -32,7 +32,7 @@ export const item = {
 export default function Tray({ selected, removeFromTray }: TrayProps) {
     return (
         <motion.ul
-            className="space-y-2 h-[200px]"
+            className="space-y-2"
             variants={list}
             initial="hidden"
             animate="show"
@@ -58,7 +58,7 @@ export default function Tray({ selected, removeFromTray }: TrayProps) {
                         )}
                         <div className="flex-1">
                             <div className="text-sm font-bold">{s.name}</div>
-                            <div className="text-xs">{s.artists.join(", ")}</div>
+                            <div className="text-xs text-neutral-400">{s.artists.join(", ")}</div>
                         </div>
                         <button
                             onClick={() => removeFromTray(s.trackId)}

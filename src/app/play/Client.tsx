@@ -27,7 +27,7 @@ function Client() {
 
     return (
         <main
-            className="relative overflow-hidden min-h-screen flex justify-center items-center"
+            className="relative w-full overflow-hidden min-h-screen flex justify-center items-center"
             style={{ height: `${metrics.innerHeight}px` }}
         >
             <ui.PrograssOverlay sdkLoader={sdkLoader} />
@@ -43,7 +43,12 @@ function Client() {
                         priority
                         quality={90}
                     />
-                    <div className="w-2/3 p-1 m-auto rounded-sm shadow-2xl z-10 bg-black border-gray-500 overflow-hidden">
+                    <div
+                        className="p-1 m-auto rounded-sm shadow-2xl z-10 bg-black border-gray-500 overflow-hidden"
+                        style={{
+                            width: `calc(${metrics.innerWidth}px * ${metrics.innerWidth >= 1440 ? "3/4" : metrics.innerWidth >= 1120 ? "5/6" : "100%"})`,
+                        }}
+                    >
                         <div className="grid grid-cols-5 gap-1">
                             <div className="col-span-2 flex justify-center items-center aspect-square overflow-hidden">
                                 <Image
@@ -65,17 +70,17 @@ function Client() {
                                     className="overflow-y-scroll"
                                     style={{
                                         maxHeight: metrics.innerWidth
-                                            ? `calc((${metrics.innerWidth}px * 2/3 - 8px) * 2/5 - 118px)`
+                                            ? `calc((${metrics.innerWidth}px * ${metrics.innerWidth >= 1440 ? "3/4" : metrics.innerWidth >= 1120 ? "5/6" : "100%"} - 8px) * 2/5 - 118px)`
                                             : undefined, // SSR 초기 렌더에서는 undefined로 두고, 클라이언트에서 즉시 갱신
                                     }}
                                 >
-                                    <ul>
+                                    <ul className="space-y-3">
                                         {playlistItems.map((t) => (
                                             <button
                                                 type="button"
                                                 key={t.trackId}
                                                 className={cn(
-                                                    "w-full mb-[10px] flex justify-start items-center gap-3 p-2 rounded-sm hover:bg-neutral-800 cursor-pointer duration-150 overflow-x-visible",
+                                                    "w-full flex justify-start items-center gap-3 p-2 py-3 rounded hover:bg-neutral-800 cursor-pointer duration-150 overflow-x-visible",
                                                     states.trackOrder === t.orderIndex &&
                                                         "!bg-white"
                                                 )}
@@ -83,19 +88,19 @@ function Client() {
                                                     actions.handleOrder(0, t.orderIndex!)
                                                 }
                                             >
-                                                <div>
+                                                <div className="w-full">
                                                     <div
                                                         className={cn(
                                                             "flex justify-start font-bold text-white duration-150",
                                                             states.trackOrder === t.orderIndex &&
-                                                                "text-green-500"
+                                                                "text-green-400"
                                                         )}
                                                     >
                                                         {t.name}
                                                     </div>
                                                     <div
                                                         className={cn(
-                                                            "text-xs text-white flex justify-start",
+                                                            "text-xs text-neutral-400 flex justify-start",
                                                             states.trackOrder === t.orderIndex &&
                                                                 "text-black"
                                                         )}
@@ -121,11 +126,11 @@ function Client() {
                                 </div>
                                 <div className="w-full h-[90px] bg-linear-30">
                                     <div className="relative flex flex-col justify-end w-full h-full">
-                                        <div>
+                                        <div className="w-full">
                                             <div className="font-bold text-white">
                                                 {states.track.name}
                                             </div>
-                                            <div className="text-sm text-white">
+                                            <div className="text-sm text-white text-start w-full">
                                                 {states.track.artists
                                                     .map((a: any) => a.name)
                                                     .join(", ")}
